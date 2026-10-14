@@ -1,0 +1,103 @@
+{
+  "note": "Manual override precedence. Keys are written the way a human would type them; the suite normalises them with normalizeOverrideMap() exactly like the content script does when it reads storage.",
+  "profileName": "Ningfeng Que",
+  "aliases": ["NingFeng Que", "N. Que", "阙宁峰"],
+  "cases": [
+    {
+      "note": "override replaces a wrong detection (Scholar stripped the equal-contribution marker)",
+      "title": "CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation",
+      "authors": "Yujia Sun, Ningfeng Que, Peiting Shi, Rongrong Fu",
+      "overrides": {
+        "CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation": "cofirst"
+      },
+      "roles": ["cofirst"],
+      "detected": ["second"],
+      "override": true
+    },
+    {
+      "note": "override wins over a co-first detection",
+      "title": "Adaptive Spatial Transcriptomics Interpolation via Cross-modal Cross-slice Modeling",
+      "authors": "NingFeng Que*, Xiaofei Wang*, Jingjing Chen",
+      "overrides": {
+        "adaptive spatial transcriptomics interpolation via cross-modal cross-slice modeling": "middle"
+      },
+      "roles": ["middle"],
+      "detected": ["cofirst"],
+      "override": true
+    },
+    {
+      "note": "override applies even when the owner is not in the byline",
+      "title": "A Paper Whose Bylines Scholar Truncated Badly",
+      "authors": "A. Smith, B. Jones, et al.",
+      "overrides": { "A Paper Whose Bylines Scholar Truncated Badly": "cofirst" },
+      "roles": ["cofirst"],
+      "detected": [],
+      "override": true,
+      "matchIndex": -1
+    },
+    {
+      "note": "several roles on one line",
+      "title": "StateXDiff: Cell State-Contextualized Multimodal Diffusion for Single-Cell Perturbation Prediction",
+      "authors": "Peiting Shi, Ningfeng Que, Xianzhen Huang",
+      "overrides": {
+        "StateXDiff: Cell State-Contextualized Multimodal Diffusion for Single-Cell Perturbation Prediction": "cofirst, corresponding"
+      },
+      "roles": ["cofirst", "corresponding"],
+      "override": true
+    },
+    {
+      "note": "'none' forces a paper out of every highlight",
+      "title": "Multi-Scale Residual Learning for Sparse-View CT Reconstruction",
+      "authors": "Mingzhe Li, Hao Tang, Ningfeng Que",
+      "overrides": { "Multi-Scale Residual Learning for Sparse-View CT Reconstruction": "none" },
+      "roles": [],
+      "detected": ["corresponding", "last"],
+      "override": true
+    },
+    {
+      "note": "a typo in the role name is ignored, not silently applied",
+      "title": "MLAR-UNet: LDCT image denoising based on U-Net",
+      "authors": "Hao Tang, Ningfeng Que, Yanwen Tian",
+      "overrides": { "MLAR-UNet: LDCT image denoising based on U-Net": "cofrist" },
+      "roles": ["second"],
+      "detected": ["second"],
+      "override": false
+    },
+    {
+      "note": "title matching ignores case, punctuation, dashes and diacritics",
+      "title": "VTCNet: A Feature Fusion DL Model Based on CNN and ViT for the Classification of Cervical Cells",
+      "authors": "Mingzhe Li†, Ningfeng Que†, Juanhua Zhang",
+      "overrides": {
+        "vtcnet — a feature fusion dl model based on cnn and vit for the classification of cervical cells": "second"
+      },
+      "roles": ["second"],
+      "detected": ["cofirst"],
+      "override": true
+    },
+    {
+      "note": "role synonyms: 'equal first' and 'senior'",
+      "title": "Advances in Hydrogel-Based Electronic Skins",
+      "authors": "Deliang Li, Ningfeng Que, Hao Tang, Ye Tian",
+      "overrides": { "Advances in Hydrogel-Based Electronic Skins": "equal first" },
+      "roles": ["cofirst"],
+      "override": true
+    },
+    {
+      "note": "role synonym for the senior author",
+      "title": "Some Senior Author Paper",
+      "authors": "Yumeng Song, Yin Dai, Wei Liu, Ningfeng Que",
+      "overrides": { "Some Senior Author Paper": "senior" },
+      "roles": ["last"],
+      "override": true
+    },
+    {
+      "note": "an unrelated title is left alone",
+      "title": "An Entirely Different Paper",
+      "authors": "Ningfeng Que, Hao Tang",
+      "overrides": { "Some Other Paper": "cofirst" },
+      "roles": ["first"],
+      "detected": ["first"],
+      "override": false
+    }
+  ]
+}

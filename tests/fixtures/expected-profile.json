@@ -1,0 +1,193 @@
+{
+  "note": "What the extension must conclude from tests/fixtures/sample-profile.html. tests/cases/fixture.test.js extracts the bylines and citation counts from that HTML textually (there is no DOM in plain Node) and runs them through the production classifier; tools/verify-chrome.mjs asserts the same numbers on the rendered page.",
+  "profileName": "Ningfeng Que",
+  "aliases": ["NingFeng Que", "N. Que", "阙宁峰"],
+  "sidebarTotals": { "citations": 128, "hIndex": 7, "i10Index": 5 },
+  "initialRowCount": 12,
+  "expandedRowCount": 20,
+  "allRows": { "papers": 20, "citations": 196, "hIndex": 9, "i10Index": 8 },
+  "roleCounts": {
+    "cofirst": 4,
+    "first": 2,
+    "second": 6,
+    "corresponding": 4,
+    "last": 3,
+    "middle": 5
+  },
+  "rows": [
+    {
+      "index": 1,
+      "titlePrefix": "Adaptive Spatial Transcriptomics Interpolation",
+      "matchedAuthor": "NingFeng Que*",
+      "roles": ["cofirst"],
+      "accent": "cofirst",
+      "year": 2025,
+      "citations": 7
+    },
+    {
+      "index": 2,
+      "titlePrefix": "CoInS-Net",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["second"],
+      "accent": "second",
+      "year": 2026,
+      "citations": 2
+    },
+    {
+      "index": 3,
+      "titlePrefix": "StateXDiff",
+      "matchedAuthor": "Ningfeng Que✉",
+      "roles": ["corresponding", "second"],
+      "accent": "second",
+      "year": 2026,
+      "citations": 3
+    },
+    {
+      "index": 4,
+      "titlePrefix": "Histology-Aware Graph",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["middle"],
+      "accent": "middle",
+      "year": 2026,
+      "citations": 0
+    },
+    {
+      "index": 5,
+      "titlePrefix": "A Foundational Generative Model",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["corresponding", "last"],
+      "accent": "last",
+      "year": 2026,
+      "citations": 4
+    },
+    {
+      "index": 6,
+      "titlePrefix": "MLAR-UNet",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["second"],
+      "accent": "second",
+      "year": 2025,
+      "citations": 11
+    },
+    {
+      "index": 7,
+      "titlePrefix": "Advances in Hydrogel-Based Electronic Skins",
+      "matchedAuthor": "Ningfeng Que*",
+      "roles": ["cofirst"],
+      "accent": "cofirst",
+      "year": 2025,
+      "citations": 9
+    },
+    {
+      "index": 8,
+      "titlePrefix": "Multi-scale Context-Aware Networks",
+      "matchedAuthor": "Ningfeng Que*",
+      "roles": ["cofirst"],
+      "accent": "cofirst",
+      "year": 2024,
+      "citations": 18
+    },
+    {
+      "index": 9,
+      "titlePrefix": "DesTrans",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["middle"],
+      "accent": "middle",
+      "year": 2024,
+      "citations": 22
+    },
+    {
+      "index": 10,
+      "titlePrefix": "VTCNet",
+      "matchedAuthor": "Ningfeng Que†",
+      "roles": ["cofirst"],
+      "accent": "cofirst",
+      "year": 2024,
+      "citations": 6
+    },
+    {
+      "index": 11,
+      "titlePrefix": "A Lightweight Attention U-Net",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["first"],
+      "accent": "first",
+      "year": 2021,
+      "citations": 15
+    },
+    {
+      "index": 12,
+      "titlePrefix": "Multi-Scale Residual Learning",
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["middle"],
+      "accent": "middle",
+      "year": 2020,
+      "citations": 31
+    }
+  ],
+  "page2Rows": [
+    {
+      "index": 13,
+      "title": "Spatial Transcriptomics Interpolation with Slice-Aware Transformers",
+      "roles": ["second"],
+      "accent": "second",
+      "year": 2023,
+      "citations": 5
+    },
+    {
+      "index": 14,
+      "title": "A Survey of Deep Learning for Low-Dose CT Denoising",
+      "roles": ["corresponding", "last"],
+      "accent": "last",
+      "year": 2023,
+      "citations": 8
+    },
+    {
+      "index": 15,
+      "title": "Cross-Slice Attention for 3D Medical Image Segmentation",
+      "roles": ["middle"],
+      "accent": "middle",
+      "year": 2022,
+      "citations": 12
+    },
+    {
+      "index": 16,
+      "title": "Cell-Type Deconvolution in Spatial Transcriptomics: A Benchmark",
+      "roles": ["second"],
+      "accent": "second",
+      "year": 2022,
+      "citations": 14
+    },
+    {
+      "index": 17,
+      "title": "Gradient-Guided Sparse-View CT Reconstruction with Learned Priors",
+      "roles": ["middle"],
+      "accent": "middle",
+      "year": 2023,
+      "citations": 6
+    },
+    {
+      "index": 18,
+      "title": "A Benchmark of Attention Modules for Medical Image Segmentation",
+      "roles": ["second"],
+      "accent": "second",
+      "year": 2021,
+      "citations": 10
+    },
+    {
+      "index": 19,
+      "title": "Federated Learning for Cross-Institution Medical Imaging: A Review",
+      "roles": ["corresponding", "last"],
+      "accent": "last",
+      "year": 2020,
+      "citations": 4
+    },
+    {
+      "index": 20,
+      "title": "Multi-Modal Fusion of CT and MRI with Dense Connections",
+      "roles": ["first"],
+      "accent": "first",
+      "year": 2019,
+      "citations": 9
+    }
+  ]
+}

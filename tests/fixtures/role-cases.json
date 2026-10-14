@@ -1,0 +1,117 @@
+{
+  "note": "Role classification cases for the production classifyPaper(). `roles` is the exact set of active role keys (ROLE_KEYS order), which is what the panel filters and the row accents are driven by.",
+  "profileName": "Ningfeng Que",
+  "aliases": ["NingFeng Que", "N. Que", "阙宁峰"],
+  "cases": [
+    {
+      "note": "sole first: two authors, no marker anywhere",
+      "authors": "Ningfeng Que, Hao Tang",
+      "roles": ["first"]
+    },
+    {
+      "note": "sole first of three",
+      "authors": "Ningfeng Que, Mingzhe Li, Hao Tang",
+      "roles": ["first"]
+    },
+    {
+      "note": "co-first via a shared * with the second author (owner first)",
+      "authors": "NingFeng Que*, Xiaofei Wang*, Jingjing Chen, Yixuan Jiang, Chao Li",
+      "roles": ["cofirst"]
+    },
+    {
+      "note": "co-first via a shared * where the owner is second",
+      "authors": "Deliang Li*, Ningfeng Que*, Hao Tang, Yanwen Tian",
+      "roles": ["cofirst"]
+    },
+    {
+      "note": "co-first via a shared † (dagger)",
+      "authors": "Mingzhe Li†, Ningfeng Que†, Juanhua Zhang, Pingfan Du",
+      "roles": ["cofirst"]
+    },
+    {
+      "note": "co-first via shared Unicode superscripts",
+      "authors": "Ningfeng Que¹, Xiaofei Wang¹, Chao Li²",
+      "roles": ["cofirst"]
+    },
+    {
+      "note": "co-first via a shared affiliation digit",
+      "authors": "Ningfeng Que1, Xiaofei Wang1, Chao Li2",
+      "roles": ["cofirst"]
+    },
+    {
+      "note": "different affiliation digits are not equal contribution",
+      "authors": "Ningfeng Que1, Xiaofei Wang2",
+      "roles": ["first"]
+    },
+    {
+      "note": "a marker nobody shares leaves the owner as sole first",
+      "authors": "Ningfeng Que*, Xiaofei Wang",
+      "roles": ["first"]
+    },
+    {
+      "note": "an unshared marker on the second author is not co-first (but the owner is still the second and last author)",
+      "authors": "Xiaofei Wang, Ningfeng Que*",
+      "roles": ["corresponding", "second", "last"]
+    },
+    {
+      "note": "plain second author",
+      "authors": "Yujia Sun, Ningfeng Que, Peiting Shi",
+      "roles": ["second"]
+    },
+    {
+      "note": "second author who is also corresponding (✉)",
+      "authors": "Peiting Shi, Ningfeng Que✉, Xianzhen Huang, Xiaofei Wang",
+      "roles": ["corresponding", "second"]
+    },
+    {
+      "note": "last author of a byline with no ✉ at all is treated as corresponding",
+      "authors": "Xiao-Fei Wang, Hanyu Liu, Yiran Zhao, Yuan Gao, Ningfeng Que",
+      "roles": ["corresponding", "last"]
+    },
+    {
+      "note": "last author, but somebody else carries the ✉, so not corresponding",
+      "authors": "Xiao-Fei Wang✉, Hanyu Liu, Ningfeng Que",
+      "roles": ["last"]
+    },
+    {
+      "note": "middle author of a long byline",
+      "authors": "Zhiqiong Wang, Hanyu Liu, Ningfeng Que, Boyang Zhao, Junchang Xin",
+      "roles": ["middle"]
+    },
+    {
+      "note": "truncated byline ('et al.') can never make the owner the last author",
+      "authors": "Xiao-Fei Wang, Hanyu Liu, Ningfeng Que, et al.",
+      "roles": ["middle"]
+    },
+    {
+      "note": "single author paper",
+      "authors": "Ningfeng Que",
+      "roles": ["first", "corresponding", "last"]
+    },
+    {
+      "note": "shared ✉ between the first two authors is co-first + corresponding",
+      "authors": "Ningfeng Que✉, Xiaofei Wang✉, Chao Li",
+      "roles": ["cofirst", "corresponding"]
+    },
+    {
+      "note": "a ✉ shared only between later authors is not co-first",
+      "authors": "Chao Li, Yin Dai, Ningfeng Que✉, Wei Liu✉",
+      "roles": ["corresponding", "middle"]
+    },
+    {
+      "note": "regression: two surnames ending in the same letter must not look like a shared marker",
+      "authors": "Ningfeng Que, Jian Xie",
+      "roles": ["first"]
+    },
+    {
+      "note": "co-first and last author at the same time (two author paper, both marked)",
+      "authors": "Deliang Li*, Ningfeng Que*",
+      "roles": ["cofirst", "corresponding", "last"]
+    },
+    {
+      "note": "a paper the owner is not on has no role at all",
+      "authors": "Yujia Sun, Peiting Shi, Yin Dai",
+      "roles": []
+    }
+  ]
+}

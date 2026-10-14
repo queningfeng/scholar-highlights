@@ -1,0 +1,127 @@
+{
+  "note": "Author matching cases, run through the production classifyPaper(). `matchIndex` is the index of the byline author the owner was matched to (-1 = not found); `matchedAuthor` is the text of that author (a merged span when the name is written in reversed order); `roles` is asserted only when present.",
+  "profileName": "Ningfeng Que",
+  "aliases": ["NingFeng Que", "N. Que", "阙宁峰"],
+  "cases": [
+    {
+      "note": "full display name, middle of the byline",
+      "authors": "Hao Tang, Ningfeng Que, Yanwen Tian",
+      "matchIndex": 1,
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["second"]
+    },
+    {
+      "note": "full display name, first in the byline",
+      "authors": "Ningfeng Que, Hao Tang, Yanwen Tian",
+      "matchIndex": 0,
+      "matchedAuthor": "Ningfeng Que",
+      "roles": ["first"]
+    },
+    {
+      "note": "abbreviated given name with a full stop",
+      "authors": "Yujia Sun, N. Que, Peiting Shi",
+      "matchIndex": 1,
+      "matchedAuthor": "N. Que",
+      "roles": ["second"]
+    },
+    {
+      "note": "abbreviated given name without a full stop",
+      "authors": "Yujia Sun, N Que, Peiting Shi",
+      "matchIndex": 1,
+      "matchedAuthor": "N Que"
+    },
+    {
+      "note": "reversed order inside a comma separated byline is read as one author",
+      "authors": "Hao Tang, Que, Ningfeng, Mingzhe Li",
+      "matchIndex": 1,
+      "matchedAuthor": "Que, Ningfeng",
+      "roles": ["second"]
+    },
+    {
+      "note": "reversed order with an initial",
+      "authors": "Hao Tang, Que, N., Mingzhe Li",
+      "matchIndex": 1,
+      "matchedAuthor": "Que, N"
+    },
+    {
+      "note": "reversed order without the comma",
+      "authors": "Hao Tang, Que Ningfeng, Mingzhe Li",
+      "matchIndex": 1,
+      "matchedAuthor": "Que Ningfeng"
+    },
+    {
+      "note": "middle initial that the profile does not show",
+      "authors": "Ningfeng X. Que, Hao Tang",
+      "matchIndex": 0,
+      "matchedAuthor": "Ningfeng X. Que"
+    },
+    {
+      "note": "two initials",
+      "authors": "Yujia Sun, N. F. Que, Peiting Shi",
+      "matchIndex": 1,
+      "matchedAuthor": "N. F. Que"
+    },
+    {
+      "note": "alias with different capitalisation",
+      "authors": "NingFeng Que, Xiaofei Wang",
+      "matchIndex": 0,
+      "matchedAuthor": "NingFeng Que",
+      "roles": ["first"]
+    },
+    {
+      "note": "Chinese alias (阙宁峰) inside a Chinese byline with full-width commas",
+      "authors": "王潇飞，阙宁峰，陈晶晶",
+      "matchIndex": 1,
+      "matchedAuthor": "阙宁峰",
+      "roles": ["second"]
+    },
+    {
+      "note": "a paper the owner is not on",
+      "authors": "Yujia Sun, Peiting Shi, Yin Dai",
+      "matchIndex": -1,
+      "matchedAuthor": ""
+    },
+    {
+      "note": "near miss must never match: different given name and surname",
+      "authors": "Nina Quince, Hao Tang",
+      "matchIndex": -1,
+      "matchedAuthor": ""
+    },
+    {
+      "note": "truncated byline without the owner",
+      "authors": "A. Smith, B. Jones, et al.",
+      "matchIndex": -1,
+      "matchedAuthor": ""
+    },
+    {
+      "note": "different author ending in the same letter as a surname must not match",
+      "authors": "Hao Tang, Jian Xie",
+      "matchIndex": -1,
+      "matchedAuthor": ""
+    },
+    {
+      "note": "diacritics: profile name with umlauts, byline without",
+      "profileName": "Zoë Müller",
+      "aliases": [],
+      "authors": "H. Schmidt, Z. Muller, K. Weber",
+      "matchIndex": 1,
+      "matchedAuthor": "Z. Muller"
+    },
+    {
+      "note": "diacritics: byline with umlauts, reversed order",
+      "profileName": "Zoë Müller",
+      "aliases": [],
+      "authors": "K. Weber, Müller, Zoë",
+      "matchIndex": 1,
+      "matchedAuthor": "Müller, Zoë",
+      "roles": ["corresponding", "second", "last"]
+    },
+    {
+      "note": "single author paper written in reversed order",
+      "authors": "Que, N.",
+      "matchIndex": 0,
+      "matchedAuthor": "Que, N",
+      "roles": ["first", "corresponding", "last"]
+    }
+  ]
+}

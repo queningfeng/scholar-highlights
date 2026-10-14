@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ningfeng Que - Google Scholar (fixture)</title>
+    <!--
+      Offline reproduction of a Google Scholar author profile page.
+
+      It exists so the extension can be exercised without touching the network:
+        - tests/verify-chrome.mjs loads it in headless Chrome with the real
+          extension installed and asserts what the content script did to it;
+        - a human can open it after loading the extension with the match pattern
+          widened (see tools/README-verify.md).
+
+      The DOM structure, class names and nesting mirror Scholar's own markup:
+      #gsc_prf > #gsc_prf_i > #gsc_prf_in (name) / .gsc_prf_il (info rows),
+      #gsc_a_t > tbody#gsc_a_b > tr.gsc_a_tr > td.gsc_a_t (a.gsc_a_at title,
+      div.gs_gray authors, div.gs_gray venue) + td.gsc_a_c > a.gsc_a_ac +
+      td.gsc_a_y > span.gsc_a_h, the sidebar stats table #gsc_rsb_st, the sidebar
+      sections #gsc_rsb_cit / #gsc_rsb_co, and #gsc_bpf_more.
+
+      The 12 initial rows are the author's real papers. Rows that Scholar cannot
+      show markers for (it strips them) are annotated here exactly as the
+      papers' own bylines are: shared '*' or '†' for equal contribution, '✉' for
+      corresponding author. The trailing <script> simulates Scholar's "Show
+      more" pagination with 8 further rows so auto-expansion is testable.
+    -->
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        background: #fff;
+        color: #222;
+        font: 13px Arial, sans-serif;
+      }
+      #gs_res_ccl {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        max-width: 1100px;
+      }
+      #gs_res_ccl_mid {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      #gsc_rsb {
+        flex: 0 0 200px;
+        order: 2;
+      }
+      #gsc_prf_i {
+        padding-bottom: 12px;
+      }
+      #gsc_prf_in {
+        font-size: 20px;
+        font-weight: normal;
+      }
+      .gsc_prf_il {
+        color: #777;
+        padding-top: 2px;
+      }
+      #gsc_a_t {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      #gsc_a_t th {
+        font-weight: normal;
+        color: #777;
+        text-align: left;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      #gsc_a_t th.gsc_a_c,
+      #gsc_a_t th.gsc_a_y {
+        text-align: right;
+        padding-right: 8px;
+      }
+      tr.gsc_a_tr {
+        border-bottom: 1px solid #e5e5e5;
+      }
+      td.gsc_a_t {
+        padding: 8px 0;
+        vertical-align: top;
+      }
+      td.gsc_a_c,
+      td.gsc_a_y {
+        text-align: right;
+        padding: 8px;
+        color: #777;
+        vertical-align: top;
+      }
+      a.gsc_a_at {
+        color: #1a0dab;
+        text-decoration: none;
+      }
+      div.gs_gray {
+        color: #777;
+        font-size: 11px;
+      }
+      #gsc_rsb_st {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 24px;
+      }
+      #gsc_rsb_st th,
+      #gsc_rsb_st td {
+        font-weight: normal;
+        text-align: right;
+        padding: 4px 8px 4px 0;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      #gsc_rsb_st td.gsc_rsb_sl {
+        text-align: left;
+      }
+      .gsc_rsb_std {
+        font-size: 10pt;
+      }
+      #gsc_rsb_cit,
+      #gsc_rsb_co {
+        border-top: 1px solid #e5e5e5;
+        padding-top: 8px;
+        font-size: 15px;
+      }
+      #gsc_bpf {
+        padding-top: 12px;
+      }
+      #gsc_bpf_more {
+        border: 1px solid #dadce0;
+        background: #fff;
+        color: #1a0dab;
+        padding: 4px 10px;
+        cursor: pointer;
+      }
+      #gsc_bpf_more[disabled] {
+        color: #9aa0a6;
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gs_res_ccl">
+      <div id="gs_res_ccl_mid">
+        <div id="gsc_prf">
+          <div id="gsc_prf_w">
+            <div id="gsc_prf_i">
+              <div id="gsc_prf_in">Ningfeng Que</div>
+              <div class="gsc_prf_il">Peking University</div>
+              <div class="gsc_prf_il">Verified email at pku.edu.cn</div>
+              <div class="gsc_prf_il">Medical image analysis, spatial transcriptomics</div>
+              <div class="gsc_prf_il">Also published as: NingFeng Que, N. Que, 阙宁峰</div>
+            </div>
+          </div>
+        </div>
+
+        <table id="gsc_a_t">
+          <thead>
+            <!-- Scholar renders the header row with the same class; the content
+                 script must ignore it (it is outside #gsc_a_b and has <th>). -->
+            <tr class="gsc_a_tr">
+              <th class="gsc_a_th">Title</th>
+              <th class="gsc_a_c">Cited by</th>
+              <th class="gsc_a_y">Year</th>
+            </tr>
+          </thead>
+          <tbody id="gsc_a_b">
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">Adaptive Spatial Transcriptomics Interpolation via Cross-modal Cross-slice Modeling</a>
+                <div class="gs_gray">NingFeng Que*, Xiaofei Wang*, Jingjing Chen, Yixuan Jiang, Chao Li</div>
+                <div class="gs_gray">MICCAI 2025 (arXiv:2505.10729)</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">7</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2025</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation</a>
+                <div class="gs_gray">Yujia Sun, Ningfeng Que, Peiting Shi, Rongrong Fu, Yingying Yang, Xinhang Li, Yin Dai</div>
+                <div class="gs_gray">arXiv preprint, 2026</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">2</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2026</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">StateXDiff: Cell State-Contextualized Multimodal Diffusion for Single-Cell Perturbation Prediction</a>
+                <div class="gs_gray">Peiting Shi, Ningfeng Que✉, Xianzhen Huang, Xiaofei Wang, Jun Xi</div>
+                <div class="gs_gray">arXiv preprint, 2026</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">3</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2026</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">Histology-Aware Graph for Modeling Intercellular Communication in Spatial Transcriptomics</a>
+                <div class="gs_gray">Xiao-Fei Wang, Chen-Yang Tao, Yu Jiang, Yi-Xuan Jiang, Hanyu Liu, Zhengliang Jiang, Pinan Zhu, Ningfeng Que, Jun Xi, Stephen J. Price, Yaozong Mou, Jian-Guo Xu, Chao Li</div>
+                <div class="gs_gray">bioRxiv, 2026</div>
+              </td>
+              <!-- Scholar leaves the cell empty when a paper has no citations. -->
+              <td class="gsc_a_c"></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2026</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">A Foundational Generative Model for Cross-platform Unified Enhancement of Spatial Transcriptomics</a>
+                <div class="gs_gray">Xiao-Fei Wang, Hanyu Liu, Yiran Zhao, Yuan Gao, Ningfeng Que</div>
+                <div class="gs_gray">bioRxiv, 2026</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">4</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2026</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">MLAR-UNet: LDCT image denoising based on U-Net with multiple lightweight attention-based modules and residual reinforcement</a>
+                <div class="gs_gray">Hao Tang, Ningfeng Que, Yanwen Tian, Mingzhe Li, Alessandro Perelli, Yueyang Teng</div>
+                <div class="gs_gray">Physics in Medicine &amp; Biology, 2025</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">11</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2025</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">Advances in Hydrogel-Based Electronic Skins: From Material Design to Multifunctional Applications</a>
+                <div class="gs_gray">Deliang Li*, Ningfeng Que*, Hao Tang, Yanwen Tian, Chenxi Jing, Le Liu, Guanshi Liu, Hongxing Zhou, Wenwen Zhang, Hongguo Wei, Ye Tian</div>
+                <div class="gs_gray">Advanced Functional Materials, 2025</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">9</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2025</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">Multi-scale Context-Aware Networks Based on Fragment Association for Human Activity Recognition</a>
+                <div class="gs_gray">Zhiqiong Wang*, Ningfeng Que*, Boyang Zhao, Qi Shen, Mingzhe Li, Mingke Yan, Junchang Xin</div>
+                <div class="gs_gray">IJCAI 2024</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">18</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2024</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">DesTrans: A medical image fusion method based on Transformer and improved DenseNet</a>
+                <div class="gs_gray">Yumeng Song, Yin Dai, Wei Liu, Yue Liu, Xinpeng Liu, Qiming Yu, Xinghan Liu, Ningfeng Que, Mingzhe Li</div>
+                <div class="gs_gray">Computers in Biology and Medicine, 2024</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">22</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2024</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">VTCNet: A Feature Fusion DL Model Based on CNN and ViT for the Classification of Cervical Cells</a>
+                <div class="gs_gray">Mingzhe Li†, Ningfeng Que†, Juanhua Zhang, Pingfan Du, Yin Dai</div>
+                <div class="gs_gray">International Journal of Imaging Systems and Technology, 2024</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">6</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2024</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">A Lightweight Attention U-Net for Low-Dose CT Denoising on Sparse Views</a>
+                <div class="gs_gray">Ningfeng Que, Hao Tang, Mingzhe Li</div>
+                <div class="gs_gray">IEEE Access, 2021</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">15</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2021</span></td>
+            </tr>
+            <tr class="gsc_a_tr">
+              <td class="gsc_a_t">
+                <a class="gsc_a_at" href="#">Multi-Scale Residual Learning for Sparse-View CT Reconstruction</a>
+                <div class="gs_gray">Mingzhe Li, Hao Tang, Yanwen Tian, Ningfeng Que, Chao Li</div>
+                <div class="gs_gray">IEEE Transactions on Instrumentation and Measurement, 2020</div>
+              </td>
+              <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">31</a></td>
+              <td class="gsc_a_y"><span class="gsc_a_h gsc_a_hc gs_ibl">2020</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id="gsc_bpf">
+          <button id="gsc_bpf_more" class="gs_btnpr gs_in_a" type="button">Show more</button>
+        </div>
+      </div>
+
+      <div id="gsc_rsb">
+        <table id="gsc_rsb_st">
+          <tbody>
+            <tr>
+              <th class="gsc_rsb_sl">&nbsp;</th>
+              <th class="gsc_rsb_std">All</th>
+              <th class="gsc_rsb_std">Since 2021</th>
+            </tr>
+            <tr>
+              <td class="gsc_rsb_sl"><a class="gsc_rsb_f" href="#">Citations</a></td>
+              <td class="gsc_rsb_std">128</td>
+              <td class="gsc_rsb_std">128</td>
+            </tr>
+            <tr>
+              <td class="gsc_rsb_sl"><a class="gsc_rsb_f" href="#">h-index</a></td>
+              <td class="gsc_rsb_std">7</td>
+              <td class="gsc_rsb_std">7</td>
+            </tr>
+            <tr>
+              <td class="gsc_rsb_sl"><a class="gsc_rsb_f" href="#">i10-index</a></td>
+              <td class="gsc_rsb_std">5</td>
+              <td class="gsc_rsb_std">5</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id="gsc_rsb_cit">
+          <div class="gsc_rsb_s">Cited by</div>
+          <div id="gsc_md_hist_b"></div>
+        </div>
+
+        <div id="gsc_rsb_co">
+          <div class="gsc_rsb_s">Co-authors</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---------------------------------------------------------------------
+      // Fixture-only simulation of Scholar's "Show more" pagination.
+      // The real page fetches the next 20 rows and appends them to #gsc_a_b,
+      // then disables and hides #gsc_bpf_more once the list is exhausted.
+      // ---------------------------------------------------------------------
+      (function () {
+        "use strict";
+
+        var nextPage = [
+          ["Spatial Transcriptomics Interpolation with Slice-Aware Transformers", "Xiaofei Wang, Ningfeng Que, Jingjing Chen", "bioRxiv, 2023", "5", "2023"],
+          ["A Survey of Deep Learning for Low-Dose CT Denoising", "Yanwen Tian, Hao Tang, Mingzhe Li, Ningfeng Que", "Medical Physics, 2023", "8", "2023"],
+          ["Cross-Slice Attention for 3D Medical Image Segmentation", "Jingjing Chen, Yixuan Jiang, Ningfeng Que, Chao Li, Xiaofei Wang", "MICCAI Workshop, 2022", "12", "2022"],
+          ["Cell-Type Deconvolution in Spatial Transcriptomics: A Benchmark", "Hanyu Liu, Ningfeng Que, Xiao-Fei Wang", "bioRxiv, 2022", "14", "2022"],
+          ["Gradient-Guided Sparse-View CT Reconstruction with Learned Priors", "Hao Tang, Mingzhe Li, Ningfeng Que, Yueyang Teng", "IEEE Access, 2023", "6", "2023"],
+          ["A Benchmark of Attention Modules for Medical Image Segmentation", "Mingzhe Li, Ningfeng Que, Hao Tang, Deliang Li", "ICIP, 2021", "10", "2021"],
+          ["Federated Learning for Cross-Institution Medical Imaging: A Review", "Yumeng Song, Yin Dai, Ningfeng Que", "Frontiers in Radiology, 2020", "4", "2020"],
+          ["Multi-Modal Fusion of CT and MRI with Dense Connections", "Ningfeng Que, Yumeng Song, Yin Dai, Wei Liu", "ISBI, 2019", "9", "2019"]
+        ];
+
+        var body = document.getElementById("gsc_a_b");
+        var more = document.getElementById("gsc_bpf_more");
+        var served = false;
+
+        more.addEventListener("click", function () {
+          if (served) return;
+          served = true;
+          for (var i = 0; i < nextPage.length; i++) {
+            var row = nextPage[i];
+            var tr = document.createElement("tr");
+            tr.className = "gsc_a_tr";
+
+            var title = document.createElement("td");
+            title.className = "gsc_a_t";
+            var link = document.createElement("a");
+            link.className = "gsc_a_at";
+            link.href = "#";
+            link.textContent = row[0];
+            var authors = document.createElement("div");
+            authors.className = "gs_gray";
+            authors.textContent = row[1];
+            var venue = document.createElement("div");
+            venue.className = "gs_gray";
+            venue.textContent = row[2];
+            title.append(link, authors, venue);
+
+            var cites = document.createElement("td");
+            cites.className = "gsc_a_c";
+            var count = document.createElement("a");
+            count.className = "gsc_a_ac gs_ibl";
+            count.href = "#";
+            count.textContent = row[3];
+            cites.append(count);
+
+            var year = document.createElement("td");
+            year.className = "gsc_a_y";
+            var span = document.createElement("span");
+            span.className = "gsc_a_h gsc_a_hc gs_ibl";
+            span.textContent = row[4];
+            year.append(span);
+
+            tr.append(title, cites, year);
+            body.append(tr);
+          }
+          more.disabled = true;
+          more.style.display = "none";
+        });
+      })();
+    </script>
+  </body>
+</html>

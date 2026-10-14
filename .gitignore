@@ -1,0 +1,17 @@
+# dependencies (none are required to run or build the extension)
+node_modules/
+
+# artefacts of the local verification harness
+tools/.verify-build/
+tools/.verify-profile/
+tools/.probe-profile*/
+tools/artifacts/
+
+# packaging output
+web-ext-artifacts/
+*.zip
+
+# editor / OS noise
+.DS_Store
+Thumbs.db
+*.log

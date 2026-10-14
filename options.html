@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scholar Highlights — 设置</title>
+    <link rel="stylesheet" href="styles/options.css" />
+  </head>
+  <body>
+    <main class="opt">
+      <header class="opt-head">
+        <h1>Scholar Highlights</h1>
+        <p class="opt-sub">
+          为 Google Scholar 作者主页按<strong>作者角色</strong>着色，并按筛选结果重算论文数与指标。
+          所有设置保存在 <code>storage.sync</code>，不联网、不申请任何主机权限。
+        </p>
+      </header>
+
+      <section class="opt-card">
+        <h2>别名列表（Also published as）</h2>
+        <p class="opt-help">
+          每行一个名字（<strong>不要用逗号分隔</strong>，因为 “Que, Ningfeng” 这类倒装写法本身带逗号）。
+          用于识别论文作者列表里不同拼写的你自己，
+          例如 <code>N. Que</code>、<code>Que, Ningfeng</code>、<code>阙宁峰</code>。
+          插件会另外尽力读取主页上的 “Also published as” 一行；读不到也不影响，
+          这里的列表永远是可靠的来源。
+        </p>
+        <textarea id="aliases" rows="5" spellcheck="false" placeholder="Ningfeng Que&#10;N. Que&#10;Que, Ningfeng"></textarea>
+      </section>
+
+      <section class="opt-card">
+        <h2>手动覆盖（Manual overrides）</h2>
+        <p class="opt-help">
+          格式：<code>论文标题 =&gt; 角色</code>，每行一条。角色可写
+          <code>first</code>、<code>cofirst</code>、<code>corresponding</code>、
+          <code>second</code>、<code>last</code>、<code>middle</code>，
+          也可以用 <code>cofirst, corresponding</code> 组合，或写 <code>none</code> 表示不标注。
+          标题匹配忽略大小写、标点和变音符号。<strong>手动覆盖的优先级最高</strong>，
+          会完全替代自动识别的结果 —— 当 Google Scholar 抹掉了共同第一作者的
+          <code>*</code> 标记时，就写在这里。
+        </p>
+        <textarea id="overrides" rows="8" spellcheck="false" placeholder="adaptive spatial transcriptomics interpolation via cross modal cross slice modeling => cofirst"></textarea>
+        <div id="override-report" class="opt-report" role="status" aria-live="polite"></div>
+        <details class="opt-details" id="preset-details" hidden>
+          <summary>内置预设（Ningfeng Que 的主页）</summary>
+          <p class="opt-help">
+            这些是随插件附带、并不出现在 Scholar 页面上的共同第一作者记录。它们只在你
+            的手动覆盖列表里没有同名条目时生效，随时可以在上面覆盖或删除。
+          </p>
+          <ul id="preset-list" class="opt-list"></ul>
+        </details>
+      </section>
+
+      <section class="opt-card">
+        <h2>默认高亮角色与图例</h2>
+        <p class="opt-help">
+          勾选的角色会在打开主页时默认高亮；每篇论文可以同时属于多个角色，
+          右侧的色块同时用作主页侧栏的图例。
+        </p>
+        <div id="role-list" class="opt-roles"></div>
+      </section>
+
+      <section class="opt-card">
+        <h2>行为与外观</h2>
+        <div class="opt-grid">
+          <label class="opt-check" for="auto-expand">
+            <input type="checkbox" id="auto-expand" />
+            <span>打开主页时自动点 “Show more”，加载全部论文（指标才覆盖全部论文）</span>
+          </label>
+          <label class="opt-check" for="mark-name">
+            <input type="checkbox" id="mark-name" />
+            <span>在作者列表中高亮我自己的名字</span>
+          </label>
+          <label class="opt-check" for="focus-mode">
+            <input type="checkbox" id="focus-mode" />
+            <span>默认开启专注模式（隐藏所有未高亮的论文行）</span>
+          </label>
+          <label class="opt-check" for="use-preset">
+            <input type="checkbox" id="use-preset" />
+            <span>使用内置的 Ningfeng Que 预设（仅在该主页生效）</span>
+          </label>
+          <label class="opt-select" for="theme">
+            <span>配色主题</span>
+            <select id="theme">
+              <option value="auto">自动（跟随页面 / 系统）</option>
+              <option value="light">浅色</option>
+              <option value="dark">深色</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <footer class="opt-foot">
+        <div class="opt-status" id="status" role="status" aria-live="polite"></div>
+        <div class="opt-actions">
+          <button type="button" id="reset" class="opt-button">恢复默认设置</button>
+          <span class="opt-version" id="version"></span>
+        </div>
+      </footer>
+    </main>
+
+    <script src="src/content.js"></script>
+    <script src="src/options.js"></script>
+  </body>
+</html>

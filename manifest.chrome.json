@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Scholar Highlights",
+  "version": "1.0.0",
+  "description": "Colour-code Scholar papers by your authorship role (co-first included), with filters, focus mode and recalculated metrics.",
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "96": "assets/icons/icon-96.png",
+    "128": "assets/icons/icon-128.png"
+  },
+  "permissions": ["storage"],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://scholar.google.com/citations*"],
+      "run_at": "document_idle",
+      "js": ["src/content.js"],
+      "css": ["styles/content.css"]
+    }
+  ]
+}

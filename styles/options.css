@@ -1,0 +1,286 @@
+/*!
+ * Scholar Highlights - options page styles.
+ *
+ * The role tokens below must stay identical to the ones in styles/content.css
+ * (tests/palette.test.js compares them), so the legend and the highlighted rows
+ * can never drift apart.
+ */
+
+:root {
+  --shx-first-line: #f2b705;
+  --shx-first-tint: #fff8e1;
+  --shx-cofirst-line: #7c4dff;
+  --shx-cofirst-tint: #f1ecff;
+  --shx-corresponding-line: #137333;
+  --shx-corresponding-tint: #e6f4ea;
+  --shx-second-line: #e8710a;
+  --shx-second-tint: #fff1e3;
+  --shx-last-line: #1a73e8;
+  --shx-last-tint: #e8f0fe;
+  --shx-middle-line: #9aa0a6;
+  --shx-middle-tint: #f5f6f7;
+
+  --opt-text: #202124;
+  --opt-muted: #5f6368;
+  --opt-line: #dadce0;
+  --opt-surface: #ffffff;
+  --opt-canvas: #f8f9fa;
+  --opt-accent: #1a73e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shx-first-line: #fdd663;
+    --shx-first-tint: #3a3320;
+    --shx-cofirst-line: #b388ff;
+    --shx-cofirst-tint: #2c2545;
+    --shx-corresponding-line: #81c995;
+    --shx-corresponding-tint: #1f3326;
+    --shx-second-line: #ffb26b;
+    --shx-second-tint: #3a2b1c;
+    --shx-last-line: #8ab4f8;
+    --shx-last-tint: #1f2f45;
+    --shx-middle-line: #9aa0a6;
+    --shx-middle-tint: #2a2b2d;
+
+    --opt-text: #e8eaed;
+    --opt-muted: #9aa0a6;
+    --opt-line: #3c4043;
+    --opt-surface: #202124;
+    --opt-canvas: #171717;
+    --opt-accent: #8ab4f8;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px 40px;
+  background: var(--opt-canvas);
+  color: var(--opt-text);
+  font: 14px/1.55 "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.opt {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.opt-head h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.opt-sub {
+  margin: 0 0 20px;
+  color: var(--opt-muted);
+}
+
+.opt-card {
+  background: var(--opt-surface);
+  border: 1px solid var(--opt-line);
+  border-radius: 8px;
+  padding: 16px 18px 18px;
+  margin-bottom: 16px;
+}
+
+.opt-card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.opt-help {
+  margin: 0 0 10px;
+  color: var(--opt-muted);
+  font-size: 13px;
+}
+
+code {
+  background: rgba(128, 128, 128, 0.16);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--opt-line);
+  border-radius: 4px;
+  background: var(--opt-surface);
+  color: var(--opt-text);
+  font: 12.5px/1.5 Consolas, "Courier New", monospace;
+  resize: vertical;
+}
+
+textarea:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid var(--opt-accent);
+  outline-offset: -1px;
+}
+
+.opt-report {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--opt-muted);
+  white-space: pre-line;
+}
+
+.opt-report[data-state="error"] {
+  color: #c5221f;
+}
+
+@media (prefers-color-scheme: dark) {
+  .opt-report[data-state="error"] {
+    color: #f28b82;
+  }
+}
+
+.opt-details {
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.opt-details summary {
+  cursor: pointer;
+  color: var(--opt-accent);
+}
+
+.opt-list {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  color: var(--opt-muted);
+  font-size: 12.5px;
+}
+
+.opt-roles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opt-role {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.opt-role-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.opt-role-note {
+  color: var(--opt-muted);
+  font-size: 12.5px;
+}
+
+.opt-swatch {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.opt-swatch-first {
+  background: var(--shx-first-line);
+}
+.opt-swatch-cofirst {
+  background: var(--shx-cofirst-line);
+}
+.opt-swatch-corresponding {
+  background: var(--shx-corresponding-line);
+}
+.opt-swatch-second {
+  background: var(--shx-second-line);
+}
+.opt-swatch-last {
+  background: var(--shx-last-line);
+}
+.opt-swatch-middle {
+  background: var(--shx-middle-line);
+}
+
+.opt-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opt-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.opt-check input,
+.opt-role input {
+  margin: 3px 0 0;
+  accent-color: var(--opt-accent);
+}
+
+.opt-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+select {
+  height: 28px;
+  padding: 2px 6px;
+  border: 1px solid var(--opt-line);
+  border-radius: 4px;
+  background: var(--opt-surface);
+  color: var(--opt-text);
+  font: inherit;
+}
+
+.opt-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.opt-status {
+  color: var(--opt-muted);
+  font-size: 13px;
+  min-height: 20px;
+}
+
+.opt-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.opt-button {
+  border: 1px solid var(--opt-line);
+  border-radius: 4px;
+  background: var(--opt-surface);
+  color: var(--opt-accent);
+  font: inherit;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.opt-button:hover {
+  border-color: var(--opt-accent);
+}
+
+.opt-version {
+  color: var(--opt-muted);
+  font-size: 12px;
+}

@@ -1,0 +1,494 @@
+/*!
+ * Scholar Highlights - content styles.
+ *
+ * Every typographic value below is taken from Google Scholar's own profile
+ * stylesheet so the injected section reads as native: a 15px section title on
+ * an #e5e5e5 hairline, an uppercase 13px #1a0dab action link, 10pt right
+ * aligned stat numbers with 8px padding, a 2px/1px #dadce0 control border, the
+ * #777 / #eee chart palette and 11px chart labels.
+ *
+ * Palette tokens live on :root because highlighted rows are Scholar's own
+ * table rows, which are not descendants of the injected panel. The content
+ * script sets data-shx-theme on <html> from the resolved theme setting.
+ *
+ * Keep the role tokens byte-identical to styles/options.css (tests/palette.test.js).
+ */
+
+:root {
+  --shx-first-line: #f2b705;
+  --shx-first-tint: #fff8e1;
+  --shx-cofirst-line: #7c4dff;
+  --shx-cofirst-tint: #f1ecff;
+  --shx-corresponding-line: #137333;
+  --shx-corresponding-tint: #e6f4ea;
+  --shx-second-line: #e8710a;
+  --shx-second-tint: #fff1e3;
+  --shx-last-line: #1a73e8;
+  --shx-last-tint: #e8f0fe;
+  --shx-middle-line: #9aa0a6;
+  --shx-middle-tint: #f5f6f7;
+
+  --shx-page-text: #222222;
+  --shx-page-muted: #777777;
+  --shx-page-hairline: #e5e5e5;
+  --shx-page-link: #1a0dab;
+  --shx-panel-surface: #ffffff;
+  --shx-bar: #777777;
+  --shx-bar-marked: #4d90fe;
+  --shx-mark-bg: #fff2a8;
+  --shx-mark-text: #202124;
+}
+
+:root[data-shx-theme="dark"] {
+  --shx-first-line: #fdd663;
+  --shx-first-tint: #3a3320;
+  --shx-cofirst-line: #b388ff;
+  --shx-cofirst-tint: #2c2545;
+  --shx-corresponding-line: #81c995;
+  --shx-corresponding-tint: #1f3326;
+  --shx-second-line: #ffb26b;
+  --shx-second-tint: #3a2b1c;
+  --shx-last-line: #8ab4f8;
+  --shx-last-tint: #1f2f45;
+  --shx-middle-line: #9aa0a6;
+  --shx-middle-tint: #2a2b2d;
+
+  --shx-page-text: #e8eaed;
+  --shx-page-muted: #9aa0a6;
+  --shx-page-hairline: #3c4043;
+  --shx-page-link: #8ab4f8;
+  --shx-panel-surface: #202124;
+  --shx-bar: #9aa0a6;
+  --shx-bar-marked: #8ab4f8;
+  --shx-mark-bg: #ffe082;
+  --shx-mark-text: #202124;
+}
+
+/* Fallback for the moment before the content script publishes the resolved
+   theme on <html> (and for anyone whose stylesheet load order differs):
+   follow the OS preference. The values mirror the block above; "auto" resolves
+   to dark when the page itself cannot be measured. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-shx-theme]) {
+    --shx-first-line: #fdd663;
+    --shx-first-tint: #3a3320;
+    --shx-cofirst-line: #b388ff;
+    --shx-cofirst-tint: #2c2545;
+    --shx-corresponding-line: #81c995;
+    --shx-corresponding-tint: #1f3326;
+    --shx-second-line: #ffb26b;
+    --shx-second-tint: #3a2b1c;
+    --shx-last-line: #8ab4f8;
+    --shx-last-tint: #1f2f45;
+    --shx-middle-line: #9aa0a6;
+    --shx-middle-tint: #2a2b2d;
+
+    --shx-page-text: #e8eaed;
+    --shx-page-muted: #9aa0a6;
+    --shx-page-hairline: #3c4043;
+    --shx-page-link: #8ab4f8;
+    --shx-panel-surface: #202124;
+    --shx-bar: #9aa0a6;
+    --shx-bar-marked: #8ab4f8;
+    --shx-mark-bg: #ffe082;
+    --shx-mark-text: #202124;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Publication rows                                                    */
+/* ------------------------------------------------------------------ */
+
+.shx-hidden {
+  display: none !important;
+}
+
+/* The content script tags every row with `shx-r-<role>` for each role it
+   matched and the role filter has enabled (shx-r-first, shx-r-cofirst,
+   shx-r-corresponding, shx-r-second, shx-r-last, shx-r-middle), plus one
+   `shx-a-<position>` accent class. Only the accents below are styled by
+   default; the per-role classes are there for anyone who wants custom rules. */
+
+/* Row tint. `!important` is required: Scholar's own table rules outrank a
+   single class selector. */
+tr.gsc_a_tr.shx-a-first {
+  background-color: var(--shx-first-tint) !important;
+}
+tr.gsc_a_tr.shx-a-cofirst {
+  background-color: var(--shx-cofirst-tint) !important;
+}
+tr.gsc_a_tr.shx-a-second {
+  background-color: var(--shx-second-tint) !important;
+}
+tr.gsc_a_tr.shx-a-last {
+  background-color: var(--shx-last-tint) !important;
+}
+tr.gsc_a_tr.shx-a-middle {
+  background-color: var(--shx-middle-tint) !important;
+}
+
+/* Accents are inset shadows on the cells, not borders: nothing moves. */
+tr.gsc_a_tr.shx-a-first > td.gsc_a_t {
+  box-shadow: inset 4px 0 0 0 var(--shx-first-line);
+}
+tr.gsc_a_tr.shx-a-cofirst > td.gsc_a_t {
+  box-shadow: inset 4px 0 0 0 var(--shx-cofirst-line);
+}
+tr.gsc_a_tr.shx-a-second > td.gsc_a_t {
+  box-shadow: inset 4px 0 0 0 var(--shx-second-line);
+}
+tr.gsc_a_tr.shx-a-last > td.gsc_a_t {
+  box-shadow: inset 4px 0 0 0 var(--shx-last-line);
+}
+tr.gsc_a_tr.shx-a-middle > td.gsc_a_t {
+  box-shadow: inset 4px 0 0 0 var(--shx-middle-line);
+}
+/* Corresponding is orthogonal to position, so it marks the other edge. */
+tr.gsc_a_tr.shx-corresponding > td.gsc_a_y {
+  box-shadow: inset -4px 0 0 0 var(--shx-corresponding-line);
+}
+
+:root[data-shx-theme="dark"] tr.gsc_a_tr.shx-hl .gsc_a_at {
+  color: var(--shx-page-link) !important;
+}
+:root[data-shx-theme="dark"] tr.gsc_a_tr.shx-hl .gs_gray {
+  color: #bdc1c6 !important;
+}
+
+.shx-me {
+  background-color: var(--shx-mark-bg);
+  color: var(--shx-mark-text);
+  border-radius: 2px;
+  padding: 0 1px;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  tr.gsc_a_tr {
+    transition: background-color 0.15s ease;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Injected sidebar section                                            */
+/* ------------------------------------------------------------------ */
+
+.shx-section {
+  margin: 0 0 30px 16px;
+  color: var(--shx-page-text);
+  font: 13px/1.4 Arial, Helvetica, sans-serif;
+}
+
+.shx-section *,
+.shx-section *::before,
+.shx-section *::after {
+  box-sizing: border-box;
+}
+
+/* Scholar styles buttons through id selectors; neutralise them for ours. */
+.shx-section button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  box-shadow: none;
+  font-family: inherit;
+}
+
+.shx-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0 10px;
+  border-bottom: 1px solid var(--shx-page-hairline);
+  font-size: 15px;
+}
+
+.shx-head-title {
+  font-weight: normal;
+}
+
+/* Mirrors Scholar's uppercase action links (VIEW ALL / EDIT). */
+.shx-link {
+  border: none !important;
+  background: transparent !important;
+  color: var(--shx-page-link) !important;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 6px 4px !important;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.shx-link:hover {
+  background: rgba(77, 144, 254, 0.08) !important;
+}
+.shx-section :focus-visible {
+  outline: 2px solid #4d90fe;
+  outline-offset: -1px;
+}
+
+.shx-status {
+  padding: 6px 0 0;
+  color: var(--shx-page-muted);
+  font-size: 11px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Metrics                                                             */
+/* ------------------------------------------------------------------ */
+
+.shx-metrics-block {
+  padding-top: 4px;
+}
+
+.shx-metrics {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.shx-metrics th:first-child {
+  width: 36%;
+}
+
+.shx-metrics thead th {
+  font-weight: normal;
+  color: var(--shx-page-text);
+  font-size: 12px;
+  text-align: right;
+  padding: 8px 8px 8px 0;
+  border-bottom: 1px solid var(--shx-page-hairline);
+}
+
+.shx-metrics tbody::before,
+.shx-metrics tbody::after {
+  content: "";
+  display: block;
+  height: 8px;
+}
+
+.shx-metric-label {
+  text-align: left;
+  font-weight: normal;
+  padding: 2px 4px 2px 0;
+}
+
+.shx-num {
+  text-align: right;
+  padding: 2px 8px 2px 0;
+  font-size: 10pt;
+}
+
+.shx-note,
+.shx-caption {
+  margin: 8px 0 0;
+  color: var(--shx-page-muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.shx-empty {
+  margin: 8px 0;
+  color: var(--shx-page-muted);
+  font-size: 11px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Papers-per-year chart (inline SVG, no libraries)                     */
+/* ------------------------------------------------------------------ */
+
+.shx-chart {
+  margin-top: 14px;
+}
+
+.shx-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.shx-grid {
+  stroke: #eee;
+  stroke-width: 1;
+}
+:root[data-shx-theme="dark"] .shx-grid {
+  stroke: #3c4043;
+}
+
+.shx-axis-label,
+.shx-year-label {
+  fill: var(--shx-page-muted);
+  font-size: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.shx-bar {
+  fill: var(--shx-bar);
+}
+.shx-bar-marked {
+  fill: var(--shx-bar-marked);
+}
+.shx-bar-group:hover .shx-bar,
+.shx-bar-group:hover .shx-bar-marked {
+  opacity: 0.75;
+}
+
+/* ------------------------------------------------------------------ */
+/* Collapsed options                                                   */
+/* ------------------------------------------------------------------ */
+
+.shx-options {
+  display: grid;
+  grid-template-rows: 0fr;
+}
+.shx-options.shx-open {
+  grid-template-rows: 1fr;
+}
+.shx-options:not(.shx-open) > .shx-options-inner {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shx-options {
+    transition: grid-template-rows 0.18s ease;
+  }
+}
+
+.shx-options-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  border-bottom: 1px solid var(--shx-page-hairline);
+}
+.shx-options.shx-open > .shx-options-inner {
+  padding: 12px 0 14px;
+}
+
+.shx-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.shx-legend-item {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.shx-legend-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.shx-legend-note {
+  color: var(--shx-page-muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.shx-swatch {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: 3px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+.shx-swatch-first {
+  background: var(--shx-first-line);
+}
+.shx-swatch-cofirst {
+  background: var(--shx-cofirst-line);
+}
+.shx-swatch-corresponding {
+  background: var(--shx-corresponding-line);
+}
+.shx-swatch-second {
+  background: var(--shx-second-line);
+}
+.shx-swatch-last {
+  background: var(--shx-last-line);
+}
+.shx-swatch-middle {
+  background: var(--shx-middle-line);
+}
+
+.shx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.shx-field-label {
+  color: var(--shx-page-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.shx-role-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+}
+
+.shx-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.shx-section input[type="checkbox"] {
+  margin: 0;
+  accent-color: #1a73e8;
+}
+
+.shx-year-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--shx-page-muted);
+}
+
+.shx-year {
+  height: 24px;
+  padding: 1px 2px;
+  border: 1px solid #dadce0;
+  border-radius: 2px;
+  background: var(--shx-panel-surface);
+  color: var(--shx-page-text);
+  font: 12px Arial, Helvetica, sans-serif;
+  max-width: 84px;
+}
+
+.shx-field-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shx-button {
+  border: 1px solid #dadce0 !important;
+  border-radius: 3px;
+  background: var(--shx-panel-surface) !important;
+  color: var(--shx-page-link) !important;
+  font-size: 12px !important;
+  padding: 4px 8px !important;
+  cursor: pointer;
+}
+.shx-button:hover {
+  border-color: #bdc1c6 !important;
+  background: rgba(77, 144, 254, 0.06) !important;
+}

@@ -1,0 +1,177 @@
+{
+  "note": "Hand-computed citation statistics. `papers` is a list of {citations, year}; the 12-row and 20-row cases use exactly the citation counts and years of tests/fixtures/sample-profile.html.",
+  "cases": [
+    {
+      "note": "no papers at all",
+      "papers": [],
+      "expect": { "papers": 0, "citations": 0, "hIndex": 0, "i10Index": 0, "perYear": {} }
+    },
+    {
+      "note": "one uncited paper still counts as a paper",
+      "papers": [{ "citations": 0, "year": 2020 }],
+      "expect": { "papers": 1, "citations": 0, "hIndex": 0, "i10Index": 0, "perYear": { "2020": 1 } }
+    },
+    {
+      "note": "the 12 papers of the fixture profile: sum 128, sorted 31,22,18,15,11,9,7,6,4,3,2,0 => h 7, i10 5",
+      "papers": [
+        { "citations": 7, "year": 2025 },
+        { "citations": 2, "year": 2026 },
+        { "citations": 3, "year": 2026 },
+        { "citations": 0, "year": 2026 },
+        { "citations": 4, "year": 2026 },
+        { "citations": 11, "year": 2025 },
+        { "citations": 9, "year": 2025 },
+        { "citations": 18, "year": 2024 },
+        { "citations": 22, "year": 2024 },
+        { "citations": 6, "year": 2024 },
+        { "citations": 15, "year": 2021 },
+        { "citations": 31, "year": 2020 }
+      ],
+      "expect": {
+        "papers": 12,
+        "citations": 128,
+        "hIndex": 7,
+        "i10Index": 5,
+        "perYear": { "2020": 1, "2021": 1, "2024": 3, "2025": 3, "2026": 4 }
+      }
+    },
+    {
+      "note": "co-first subset of the fixture (rows 1, 7, 8, 10): 40 citations, sorted 18,9,7,6 => h 4, i10 1",
+      "papers": [
+        { "citations": 7, "year": 2025 },
+        { "citations": 9, "year": 2025 },
+        { "citations": 18, "year": 2024 },
+        { "citations": 6, "year": 2024 }
+      ],
+      "expect": {
+        "papers": 4,
+        "citations": 40,
+        "hIndex": 4,
+        "i10Index": 1,
+        "perYear": { "2024": 2, "2025": 2 }
+      }
+    },
+    {
+      "note": "second-author subset of the fixture (rows 2, 3, 6): 16 citations, sorted 11,3,2 => h 2, i10 1",
+      "papers": [
+        { "citations": 2, "year": 2026 },
+        { "citations": 3, "year": 2026 },
+        { "citations": 11, "year": 2025 }
+      ],
+      "expect": {
+        "papers": 3,
+        "citations": 16,
+        "hIndex": 2,
+        "i10Index": 1,
+        "perYear": { "2025": 1, "2026": 2 }
+      }
+    },
+    {
+      "note": "corresponding-author subset of the fixture (rows 3, 5): 7 citations => h 2, i10 0",
+      "papers": [
+        { "citations": 3, "year": 2026 },
+        { "citations": 4, "year": 2026 }
+      ],
+      "expect": { "papers": 2, "citations": 7, "hIndex": 2, "i10Index": 0, "perYear": { "2026": 2 } }
+    },
+    {
+      "note": "middle-author subset of the fixture (rows 4, 9, 12): 53 citations, sorted 31,22,0 => h 2, i10 2",
+      "papers": [
+        { "citations": 0, "year": 2026 },
+        { "citations": 22, "year": 2024 },
+        { "citations": 31, "year": 2020 }
+      ],
+      "expect": {
+        "papers": 3,
+        "citations": 53,
+        "hIndex": 2,
+        "i10Index": 2,
+        "perYear": { "2020": 1, "2024": 1, "2026": 1 }
+      }
+    },
+    {
+      "note": "the whole fixture profile once 'Show more' has been clicked: 20 papers, 196 citations, h 9, i10 8",
+      "papers": [
+        { "citations": 7, "year": 2025 },
+        { "citations": 2, "year": 2026 },
+        { "citations": 3, "year": 2026 },
+        { "citations": 0, "year": 2026 },
+        { "citations": 4, "year": 2026 },
+        { "citations": 11, "year": 2025 },
+        { "citations": 9, "year": 2025 },
+        { "citations": 18, "year": 2024 },
+        { "citations": 22, "year": 2024 },
+        { "citations": 6, "year": 2024 },
+        { "citations": 15, "year": 2021 },
+        { "citations": 31, "year": 2020 },
+        { "citations": 5, "year": 2023 },
+        { "citations": 8, "year": 2023 },
+        { "citations": 12, "year": 2022 },
+        { "citations": 14, "year": 2022 },
+        { "citations": 6, "year": 2023 },
+        { "citations": 10, "year": 2021 },
+        { "citations": 4, "year": 2020 },
+        { "citations": 9, "year": 2019 }
+      ],
+      "expect": {
+        "papers": 20,
+        "citations": 196,
+        "hIndex": 9,
+        "i10Index": 8,
+        "perYear": {
+          "2019": 1,
+          "2020": 2,
+          "2021": 2,
+          "2022": 2,
+          "2023": 3,
+          "2024": 3,
+          "2025": 3,
+          "2026": 4
+        }
+      }
+    },
+    {
+      "note": "h-index is the largest k with the k-th most cited paper having at least k citations",
+      "papers": [
+        { "citations": 5, "year": 2001 },
+        { "citations": 5, "year": 2002 },
+        { "citations": 5, "year": 2003 },
+        { "citations": 5, "year": 2004 },
+        { "citations": 5, "year": 2005 }
+      ],
+      "expect": {
+        "papers": 5,
+        "citations": 25,
+        "hIndex": 5,
+        "i10Index": 0,
+        "perYear": { "2001": 1, "2002": 1, "2003": 1, "2004": 1, "2005": 1 }
+      }
+    },
+    {
+      "note": "i10 boundary: exactly 10 counts, 9 does not",
+      "papers": [
+        { "citations": 11, "year": 2001 },
+        { "citations": 10, "year": 2002 },
+        { "citations": 9, "year": 2003 }
+      ],
+      "expect": { "papers": 3, "citations": 30, "hIndex": 3, "i10Index": 2, "perYear": { "2001": 1, "2002": 1, "2003": 1 } }
+    },
+    {
+      "note": "classic h-index example: sorted 6,5,3,1,0 => h 3",
+      "papers": [
+        { "citations": 3, "year": 2001 },
+        { "citations": 0, "year": 2002 },
+        { "citations": 6, "year": 2003 },
+        { "citations": 1, "year": 2004 },
+        { "citations": 5, "year": null }
+      ],
+      "expect": {
+        "papers": 5,
+        "citations": 15,
+        "hIndex": 3,
+        "i10Index": 0,
+        "perYear": { "2001": 1, "2002": 1, "2003": 1, "2004": 1 }
+      }
+    }
+  ]
+}

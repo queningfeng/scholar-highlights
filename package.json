@@ -1,0 +1,26 @@
+{
+  "name": "scholar-highlights",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser extension that colour-codes Google Scholar author profile pages by the profile owner's authorship role, co-first included, with filters and recomputed metrics.",
+  "license": "MIT",
+  "author": "Ningfeng Que",
+  "keywords": [
+    "google-scholar",
+    "browser-extension",
+    "co-first-author",
+    "h-index"
+  ],
+  "comment": "No dependencies, by design: the extension is shipped as plain files, there is no build step, and the test suite uses only the Node standard library.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node tests/run.js",
+    "check:syntax": "node scripts/check-syntax.mjs",
+    "check:manifests": "node scripts/check-manifest-parity.mjs",
+    "check": "node scripts/check-syntax.mjs && node tests/run.js && node scripts/check-manifest-parity.mjs",
+    "icons": "python scripts/make-icons.py",
+    "verify:chrome": "node tools/verify-chrome.mjs"
+  }
+}

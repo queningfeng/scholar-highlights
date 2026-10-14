@@ -174,13 +174,29 @@ const ScholarHighlights = (function () {
        * (Scholar strips the shared `*` / `†` markers). They ship as a preset
        * and are only used while the stored override map is empty, so anything
        * the user writes in the options page always wins.
+       *
+       * This list is the author's own answer, verified against the publisher
+       * records -- do not add to it by inference:
+       *   co-first : CoInS-Net, StateXDiff, MLAR-UNet, VTCNet, FOCUS
+       *   NOT co-first: C2-STi (sole first author) and the hydrogel review
+       *   (a genuine second-author paper).
+       *
+       * Keys are normalizeTitle() output; tests/cases/preset.test.js pins them.
        */
       presetOverrides: Object.freeze({
-        "adaptive spatial transcriptomics interpolation via cross modal cross slice modeling":
+        "coins net a continuous position aware network for joint medical image interpolation and segmentation":
           "cofirst",
-        "advances in hydrogel based electronic skins from material design to multifunctional applications":
+        "statexdiff cell state contextualized multimodal diffusion for single cell perturbation prediction":
+          "cofirst",
+        "mlar unet ldct image denoising based on u net with multiple lightweight attention based modules and residual reinforcement":
           "cofirst",
         "vtcnet a feature fusion dl model based on cnn and vit for the classification of cervical cells":
+          "cofirst",
+        // FOCUS. Both titles are listed because the preprint was renamed; a
+        // profile can still show either one.
+        "coordinated enhancement of molecular and spatial fidelity for biological inference in spatial transcriptomics":
+          "cofirst",
+        "a foundational generative model for cross platform unified enhancement of spatial transcriptomics":
           "cofirst",
       }),
     }),

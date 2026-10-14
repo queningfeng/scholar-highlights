@@ -109,11 +109,9 @@ test("every preset override key is already in normalised form", () => {
       }
     }
   }
-  if (!SH.KNOWN_PROFILES.ZxrkoP4AAAAJ.presetOverrides[
-    "adaptive spatial transcriptomics interpolation via cross modal cross slice modeling"
-  ]) {
-    throw new Error("the co-first preset for the Adaptive Spatial Transcriptomics paper is missing");
-  }
+  // Which papers the preset lists is a content question, asserted in
+  // tests/cases/preset.test.js -- not here, where it would be an unexplained
+  // hard-coded expectation about a specific paper.
 });
 
 test("the fixtures directory is what the case files claim", () => {

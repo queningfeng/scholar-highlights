@@ -10,17 +10,19 @@
 
 "use strict";
 
+const fs = require("node:fs");
+const path = require("node:path");
+
 const harness = require("./harness.js");
 
-const cases = [
-  "./cases/name-matching.test.js",
-  "./cases/roles.test.js",
-  "./cases/overrides.test.js",
-  "./cases/metrics.test.js",
-  "./cases/filters.test.js",
-  "./cases/fixture.test.js",
-  "./cases/policy.test.js",
-];
+// Discover rather than list: an explicit array silently skipped a newly added
+// case file once already.
+const casesDir = path.join(__dirname, "cases");
+const cases = fs
+  .readdirSync(casesDir)
+  .filter((name) => name.endsWith(".test.js"))
+  .sort()
+  .map((name) => path.join(casesDir, name));
 
 for (const file of cases) {
   require(file);

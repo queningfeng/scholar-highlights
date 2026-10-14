@@ -1,7 +1,9 @@
 {
   "note": "What the extension must conclude from tests/fixtures/sample-profile.html. tests/cases/fixture.test.js extracts the bylines and citation counts from that HTML textually (there is no DOM in plain Node) and runs them through the production classifier; tools/verify-chrome.mjs asserts the same numbers on the rendered page.",
-  "profileName": "Ningfeng Que",
-  "aliases": ["NingFeng Que", "N. Que", "阙宁峰"],
+  "accentNote": "\"accent\" is the positional accent the *classifier* derives from the byline, so a middle row records \"middle\" even though the role ships disabled. tools/verify-chrome.mjs reads the classes actually applied to the DOM, where a disabled role paints nothing, and reconciles the two.",
+  "profileName": "Alex Rivera",
+  "profileIdentityNote": "Deliberately synthetic. This fixture has to exercise the corresponding-author and last-author branches, which the real author does not have, so it cannot double as his record. A synthetic name also stops the shipped preset (KNOWN_PROFILES.ZxrkoP4AAAAJ) from auto-applying here and fighting these expectations; the real identity is covered by tests/cases/preset.test.js.",
+  "aliases": ["Alex Rivera", "A. Rivera", "Alexander Rivera"],
   "sidebarTotals": { "citations": 128, "hIndex": 7, "i10Index": 5 },
   "initialRowCount": 12,
   "expandedRowCount": 20,
@@ -18,7 +20,7 @@
     {
       "index": 1,
       "titlePrefix": "Adaptive Spatial Transcriptomics Interpolation",
-      "matchedAuthor": "NingFeng Que*",
+      "matchedAuthor": "Alex Rivera*",
       "roles": ["cofirst"],
       "accent": "cofirst",
       "year": 2025,
@@ -27,7 +29,7 @@
     {
       "index": 2,
       "titlePrefix": "CoInS-Net",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["second"],
       "accent": "second",
       "year": 2026,
@@ -36,7 +38,7 @@
     {
       "index": 3,
       "titlePrefix": "StateXDiff",
-      "matchedAuthor": "Ningfeng Que✉",
+      "matchedAuthor": "Alex Rivera✉",
       "roles": ["corresponding", "second"],
       "accent": "second",
       "year": 2026,
@@ -45,7 +47,7 @@
     {
       "index": 4,
       "titlePrefix": "Histology-Aware Graph",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["middle"],
       "accent": "middle",
       "year": 2026,
@@ -54,7 +56,7 @@
     {
       "index": 5,
       "titlePrefix": "A Foundational Generative Model",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["corresponding", "last"],
       "accent": "last",
       "year": 2026,
@@ -63,7 +65,7 @@
     {
       "index": 6,
       "titlePrefix": "MLAR-UNet",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["second"],
       "accent": "second",
       "year": 2025,
@@ -72,7 +74,7 @@
     {
       "index": 7,
       "titlePrefix": "Advances in Hydrogel-Based Electronic Skins",
-      "matchedAuthor": "Ningfeng Que*",
+      "matchedAuthor": "Alex Rivera*",
       "roles": ["cofirst"],
       "accent": "cofirst",
       "year": 2025,
@@ -81,7 +83,7 @@
     {
       "index": 8,
       "titlePrefix": "Multi-scale Context-Aware Networks",
-      "matchedAuthor": "Ningfeng Que*",
+      "matchedAuthor": "Alex Rivera*",
       "roles": ["cofirst"],
       "accent": "cofirst",
       "year": 2024,
@@ -90,7 +92,7 @@
     {
       "index": 9,
       "titlePrefix": "DesTrans",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["middle"],
       "accent": "middle",
       "year": 2024,
@@ -99,7 +101,7 @@
     {
       "index": 10,
       "titlePrefix": "VTCNet",
-      "matchedAuthor": "Ningfeng Que†",
+      "matchedAuthor": "Alex Rivera†",
       "roles": ["cofirst"],
       "accent": "cofirst",
       "year": 2024,
@@ -108,7 +110,7 @@
     {
       "index": 11,
       "titlePrefix": "A Lightweight Attention U-Net",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["first"],
       "accent": "first",
       "year": 2021,
@@ -117,7 +119,7 @@
     {
       "index": 12,
       "titlePrefix": "Multi-Scale Residual Learning",
-      "matchedAuthor": "Ningfeng Que",
+      "matchedAuthor": "Alex Rivera",
       "roles": ["middle"],
       "accent": "middle",
       "year": 2020,

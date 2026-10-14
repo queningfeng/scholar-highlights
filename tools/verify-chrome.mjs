@@ -78,6 +78,55 @@ function findChrome() {
   return null;
 }
 
+/**
+ * Branded Google Chrome refuses `--load-extension` outright:
+ *
+ *   WARNING:extension_service.cc --load-extension is not allowed in Google
+ *   Chrome, ignoring.
+ *
+ * It is a build-level restriction, not a feature flag, so the harness needs a
+ * browser that actually honours the switch (Chromium, Chrome for Testing, or
+ * Edge). Probe each candidate and use the first one that does not complain.
+ *
+ * @param {string} browser
+ * @returns {boolean}
+ */
+function allowsUnpackedExtensions(browser) {
+  // Named so the existing `tools/.probe-profile*/` ignore rule covers it, in
+  // case a probe is killed by the timeout and leaves the directory behind.
+  const probeProfile = join(buildDir, "..", `.probe-profile-${process.pid}-${Date.now()}`);
+  const result = spawnSync(
+    browser,
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-first-run",
+      "--no-default-browser-check",
+      `--user-data-dir=${probeProfile}`,
+      `--load-extension=${buildDir}`,
+      "--enable-logging=stderr",
+      "--v=0",
+      "--dump-dom",
+      "about:blank",
+    ],
+    { encoding: "utf8", timeout: 40000, windowsHide: true },
+  );
+  const noise = `${result.stderr || ""}${result.stdout || ""}`;
+  rmSync(probeProfile, { recursive: true, force: true });
+  return !/--load-extension is not allowed/i.test(noise);
+}
+
+function selectBrowser() {
+  const usable = CHROME_CANDIDATES.filter((candidate) => existsSync(candidate));
+  for (const candidate of usable) {
+    if (candidate === process.env.CHROME_PATH || allowsUnpackedExtensions(candidate)) {
+      return candidate;
+    }
+    console.log(`  ..   ${candidate} refuses --load-extension; trying the next one`);
+  }
+  return null;
+}
+
 function freePort() {
   return new Promise((resolvePort, reject) => {
     const probe = createProbeServer();
@@ -267,13 +316,21 @@ function readRowsExpression() {
 async function main() {
   console.log("Scholar Highlights — headless Chrome verification\n");
 
-  const chrome = findChrome();
-  if (!check("a local Chrome/Edge build was found", Boolean(chrome), CHROME_CANDIDATES.join(", "))) {
-    console.log("\nverify: FAIL (no browser to drive)");
+  // buildDir must exist before probing: the probe points --load-extension at it.
+  const manifest = buildExtension();
+
+  const chrome = selectBrowser();
+  if (
+    !check(
+      "a local browser that honours --load-extension was found",
+      Boolean(chrome),
+      "branded Chrome refuses --load-extension; install Edge, Chromium, or Chrome for Testing",
+    )
+  ) {
+    console.log("\nverify: FAIL (no browser can load the extension)");
     process.exit(1);
   }
   console.log(`  ..   using ${chrome}`);
-  const manifest = buildExtension();
   check("the verification build matches 127.0.0.1", manifest.content_scripts[0].matches[0] === "http://127.0.0.1/*");
 
   const server = await startServer();
@@ -293,7 +350,10 @@ async function main() {
       "--disable-background-networking",
       "--disable-component-update",
       "--disable-sync",
-      "--disable-features=Translate,MediaRouter,OptimizationHints,ChromeWhatsNewUI",
+      // DisableLoadExtensionCommandLineSwitch: Chrome 137+ ignores
+      // --load-extension unless this kill-switch is itself disabled, which made
+      // this harness silently load nothing on Chrome 155.
+      "--disable-features=Translate,MediaRouter,OptimizationHints,ChromeWhatsNewUI,DisableLoadExtensionCommandLineSwitch",
       `--user-data-dir=${profileDir}`,
       `--remote-debugging-port=${debugPort}`,
       "--remote-allow-origins=*",
@@ -308,7 +368,18 @@ async function main() {
   try {
     const target = await waitForTarget(debugPort, pageUrl, 25000);
     client = await connect(target.webSocketDebuggerUrl);
-    check("the fixture page loaded in Chrome", (await evaluate(client, "location.href")).startsWith("http://127.0.0.1:"));
+    // The very first evaluate can land before the navigation commits, so wait
+    // for the URL instead of asserting on a single sample.
+    check(
+      "the fixture page loaded in the browser",
+      await waitForValue(
+        client,
+        "location.href.startsWith('http://127.0.0.1:')",
+        true,
+        15000,
+        "waiting for the fixture URL",
+      ),
+    );
 
     const panelAppeared = await waitForValue(
       client,
@@ -337,6 +408,21 @@ async function main() {
       "waiting for 'Show more' pagination",
     );
     check(`auto-expanding loaded all ${expected.expandedRowCount} papers`, expanded);
+
+    // The rows land in the DOM before the panel finishes recomputing, so wait
+    // for the "All loaded" papers figure to catch up. Without this the metrics
+    // and chart assertions below read the pre-expansion numbers and fail.
+    check(
+      "the panel recomputes its metrics over every loaded paper",
+      await waitForValue(
+        client,
+        `document.querySelectorAll("#shx-panel .shx-metrics tbody tr")[0].querySelectorAll("td")[1].textContent`,
+        String(expected.expandedRowCount),
+        20000,
+        "waiting for the metrics to settle after auto-expanding",
+      ),
+    );
+
     check(
       "Scholar's own table header row is left untouched",
       (await evaluate(client, "document.querySelector('#gsc_a_t thead tr').className")) === "gsc_a_tr" &&
@@ -366,6 +452,13 @@ async function main() {
     // ---------------------------------------------------------------- rows
     const rows = await evaluate(client, readRowsExpression());
     const rowExpectations = [...expected.rows, ...expected.page2Rows];
+    // expected-profile.json records the accent the *classifier* derives from the
+    // byline. The DOM only carries a class for roles that are enabled, and
+    // DEFAULT_SETTINGS ships `middle: false` on purpose (a mid-list position is
+    // rarely the story you want to see first). So a middle row is expected to
+    // paint nothing here; the section further down proves the role's treatment
+    // works as soon as it is switched on.
+    const DISABLED_BY_DEFAULT = new Set(["middle"]);
     let rowMismatch = null;
     rows.forEach((row, index) => {
       const want = rowExpectations[index];
@@ -376,8 +469,9 @@ async function main() {
       if (row.roles !== want.roles.join(" ")) {
         rowMismatch = rowMismatch || `row ${row.index} roles ${row.roles} != ${want.roles.join(" ")}`;
       }
-      if (row.accent !== want.accent) {
-        rowMismatch = rowMismatch || `row ${row.index} accent ${row.accent} != ${want.accent}`;
+      const wantAccent = DISABLED_BY_DEFAULT.has(want.accent) ? null : want.accent;
+      if (row.accent !== wantAccent) {
+        rowMismatch = rowMismatch || `row ${row.index} accent ${row.accent} != ${wantAccent}`;
       }
       if (row.corresponding !== want.roles.includes("corresponding")) {
         rowMismatch = rowMismatch || `row ${row.index} corresponding class`;
@@ -419,7 +513,7 @@ async function main() {
     );
     check(
       "the owner's own name is marked inside the byline",
-      cofirstRow.marked.length === 1 && cofirstRow.marked[0] === "NingFeng Que",
+      cofirstRow.marked.length === 1 && cofirstRow.marked[0] === "Alex Rivera",
       JSON.stringify(cofirstRow.marked),
     );
     check(
@@ -535,6 +629,36 @@ async function main() {
         "20",
         8000,
         "clearing the year range",
+      ),
+    );
+
+    // ------------------------------------------------- middle role (off by default)
+    // The row loop above expects no accent on middle rows, because DEFAULT_SETTINGS
+    // ships `middle: false`. Prove the role still has a working treatment.
+    check(
+      "'middle' rows carry no accent while the role ships disabled",
+      (await evaluate(client, "document.querySelectorAll('#gsc_a_b tr.gsc_a_tr.shx-a-middle').length")) === 0,
+    );
+    await evaluate(client, "document.getElementById('shx-role-middle').click()");
+    check(
+      `enabling 'middle' paints exactly the ${expected.roleCounts.middle} middle rows`,
+      await waitForValue(
+        client,
+        "document.querySelectorAll('#gsc_a_b tr.gsc_a_tr.shx-a-middle').length",
+        expected.roleCounts.middle,
+        8000,
+        "enabling the middle role",
+      ),
+    );
+    await evaluate(client, "document.getElementById('shx-role-middle').click()");
+    check(
+      "disabling it again removes the accent",
+      await waitForValue(
+        client,
+        "document.querySelectorAll('#gsc_a_b tr.gsc_a_tr.shx-a-middle').length",
+        0,
+        8000,
+        "restoring the default role set",
       ),
     );
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Ningfeng Que - Google Scholar (fixture)</title>
+    <title>Alex Rivera - Google Scholar (fixture)</title>
     <!--
       Offline reproduction of a Google Scholar author profile page.
 
@@ -19,11 +19,21 @@
       td.gsc_a_y > span.gsc_a_h, the sidebar stats table #gsc_rsb_st, the sidebar
       sections #gsc_rsb_cit / #gsc_rsb_co, and #gsc_bpf_more.
 
-      The 12 initial rows are the author's real papers. Rows that Scholar cannot
-      show markers for (it strips them) are annotated here exactly as the
-      papers' own bylines are: shared '*' or '†' for equal contribution, '✉' for
-      corresponding author. The trailing <script> simulates Scholar's "Show
-      more" pagination with 8 further rows so auto-expansion is testable.
+      The 12 initial rows are modelled on the author's real papers, and the 8
+      further rows behind "Show more" are invented. IMPORTANT: the authorship
+      roles these rows encode are deliberately varied to exercise every branch of
+      the classifier (including corresponding-author and last-author papers the
+      author does not actually have), so do NOT read the roles here as his real
+      record. The authoritative co-first list lives in KNOWN_PROFILES in
+      src/content.js and is pinned by tests/cases/preset.test.js.
+
+      Bylines are annotated the way real papers are: a shared '*' or '†' for
+      equal contribution, '✉' for a corresponding author.
+
+      The profile identity ("Alex Rivera") is synthetic on purpose: it keeps the
+      shipped preset in KNOWN_PROFILES from auto-applying to this fixture, so the
+      rows here test pure detection. The real identity and its preset live in
+      tests/cases/preset.test.js.
     -->
     <style>
       body {
@@ -141,11 +151,11 @@
         <div id="gsc_prf">
           <div id="gsc_prf_w">
             <div id="gsc_prf_i">
-              <div id="gsc_prf_in">Ningfeng Que</div>
-              <div class="gsc_prf_il">Peking University</div>
-              <div class="gsc_prf_il">Verified email at pku.edu.cn</div>
+              <div id="gsc_prf_in">Alex Rivera</div>
+              <div class="gsc_prf_il">Example University</div>
+              <div class="gsc_prf_il">Verified email at example.edu</div>
               <div class="gsc_prf_il">Medical image analysis, spatial transcriptomics</div>
-              <div class="gsc_prf_il">Also published as: NingFeng Que, N. Que, 阙宁峰</div>
+              <div class="gsc_prf_il">Also published as: Alex Rivera, A. Rivera, Alexander Rivera</div>
             </div>
           </div>
         </div>
@@ -164,7 +174,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">Adaptive Spatial Transcriptomics Interpolation via Cross-modal Cross-slice Modeling</a>
-                <div class="gs_gray">NingFeng Que*, Xiaofei Wang*, Jingjing Chen, Yixuan Jiang, Chao Li</div>
+                <div class="gs_gray">Alex Rivera*, Xiaofei Wang*, Jingjing Chen, Yixuan Jiang, Chao Li</div>
                 <div class="gs_gray">MICCAI 2025 (arXiv:2505.10729)</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">7</a></td>
@@ -173,7 +183,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation</a>
-                <div class="gs_gray">Yujia Sun, Ningfeng Que, Peiting Shi, Rongrong Fu, Yingying Yang, Xinhang Li, Yin Dai</div>
+                <div class="gs_gray">Yujia Sun, Alex Rivera, Peiting Shi, Rongrong Fu, Yingying Yang, Xinhang Li, Yin Dai</div>
                 <div class="gs_gray">arXiv preprint, 2026</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">2</a></td>
@@ -182,7 +192,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">StateXDiff: Cell State-Contextualized Multimodal Diffusion for Single-Cell Perturbation Prediction</a>
-                <div class="gs_gray">Peiting Shi, Ningfeng Que✉, Xianzhen Huang, Xiaofei Wang, Jun Xi</div>
+                <div class="gs_gray">Peiting Shi, Alex Rivera✉, Xianzhen Huang, Xiaofei Wang, Jun Xi</div>
                 <div class="gs_gray">arXiv preprint, 2026</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">3</a></td>
@@ -191,7 +201,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">Histology-Aware Graph for Modeling Intercellular Communication in Spatial Transcriptomics</a>
-                <div class="gs_gray">Xiao-Fei Wang, Chen-Yang Tao, Yu Jiang, Yi-Xuan Jiang, Hanyu Liu, Zhengliang Jiang, Pinan Zhu, Ningfeng Que, Jun Xi, Stephen J. Price, Yaozong Mou, Jian-Guo Xu, Chao Li</div>
+                <div class="gs_gray">Xiao-Fei Wang, Chen-Yang Tao, Yu Jiang, Yi-Xuan Jiang, Hanyu Liu, Zhengliang Jiang, Pinan Zhu, Alex Rivera, Jun Xi, Stephen J. Price, Yaozong Mou, Jian-Guo Xu, Chao Li</div>
                 <div class="gs_gray">bioRxiv, 2026</div>
               </td>
               <!-- Scholar leaves the cell empty when a paper has no citations. -->
@@ -201,7 +211,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">A Foundational Generative Model for Cross-platform Unified Enhancement of Spatial Transcriptomics</a>
-                <div class="gs_gray">Xiao-Fei Wang, Hanyu Liu, Yiran Zhao, Yuan Gao, Ningfeng Que</div>
+                <div class="gs_gray">Xiao-Fei Wang, Hanyu Liu, Yiran Zhao, Yuan Gao, Alex Rivera</div>
                 <div class="gs_gray">bioRxiv, 2026</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">4</a></td>
@@ -210,7 +220,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">MLAR-UNet: LDCT image denoising based on U-Net with multiple lightweight attention-based modules and residual reinforcement</a>
-                <div class="gs_gray">Hao Tang, Ningfeng Que, Yanwen Tian, Mingzhe Li, Alessandro Perelli, Yueyang Teng</div>
+                <div class="gs_gray">Hao Tang, Alex Rivera, Yanwen Tian, Mingzhe Li, Alessandro Perelli, Yueyang Teng</div>
                 <div class="gs_gray">Physics in Medicine &amp; Biology, 2025</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">11</a></td>
@@ -219,7 +229,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">Advances in Hydrogel-Based Electronic Skins: From Material Design to Multifunctional Applications</a>
-                <div class="gs_gray">Deliang Li*, Ningfeng Que*, Hao Tang, Yanwen Tian, Chenxi Jing, Le Liu, Guanshi Liu, Hongxing Zhou, Wenwen Zhang, Hongguo Wei, Ye Tian</div>
+                <div class="gs_gray">Deliang Li*, Alex Rivera*, Hao Tang, Yanwen Tian, Chenxi Jing, Le Liu, Guanshi Liu, Hongxing Zhou, Wenwen Zhang, Hongguo Wei, Ye Tian</div>
                 <div class="gs_gray">Advanced Functional Materials, 2025</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">9</a></td>
@@ -228,7 +238,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">Multi-scale Context-Aware Networks Based on Fragment Association for Human Activity Recognition</a>
-                <div class="gs_gray">Zhiqiong Wang*, Ningfeng Que*, Boyang Zhao, Qi Shen, Mingzhe Li, Mingke Yan, Junchang Xin</div>
+                <div class="gs_gray">Zhiqiong Wang*, Alex Rivera*, Boyang Zhao, Qi Shen, Mingzhe Li, Mingke Yan, Junchang Xin</div>
                 <div class="gs_gray">IJCAI 2024</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">18</a></td>
@@ -237,7 +247,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">DesTrans: A medical image fusion method based on Transformer and improved DenseNet</a>
-                <div class="gs_gray">Yumeng Song, Yin Dai, Wei Liu, Yue Liu, Xinpeng Liu, Qiming Yu, Xinghan Liu, Ningfeng Que, Mingzhe Li</div>
+                <div class="gs_gray">Yumeng Song, Yin Dai, Wei Liu, Yue Liu, Xinpeng Liu, Qiming Yu, Xinghan Liu, Alex Rivera, Mingzhe Li</div>
                 <div class="gs_gray">Computers in Biology and Medicine, 2024</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">22</a></td>
@@ -246,7 +256,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">VTCNet: A Feature Fusion DL Model Based on CNN and ViT for the Classification of Cervical Cells</a>
-                <div class="gs_gray">Mingzhe Li†, Ningfeng Que†, Juanhua Zhang, Pingfan Du, Yin Dai</div>
+                <div class="gs_gray">Mingzhe Li†, Alex Rivera†, Juanhua Zhang, Pingfan Du, Yin Dai</div>
                 <div class="gs_gray">International Journal of Imaging Systems and Technology, 2024</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">6</a></td>
@@ -255,7 +265,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">A Lightweight Attention U-Net for Low-Dose CT Denoising on Sparse Views</a>
-                <div class="gs_gray">Ningfeng Que, Hao Tang, Mingzhe Li</div>
+                <div class="gs_gray">Alex Rivera, Hao Tang, Mingzhe Li</div>
                 <div class="gs_gray">IEEE Access, 2021</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">15</a></td>
@@ -264,7 +274,7 @@
             <tr class="gsc_a_tr">
               <td class="gsc_a_t">
                 <a class="gsc_a_at" href="#">Multi-Scale Residual Learning for Sparse-View CT Reconstruction</a>
-                <div class="gs_gray">Mingzhe Li, Hao Tang, Yanwen Tian, Ningfeng Que, Chao Li</div>
+                <div class="gs_gray">Mingzhe Li, Hao Tang, Yanwen Tian, Alex Rivera, Chao Li</div>
                 <div class="gs_gray">IEEE Transactions on Instrumentation and Measurement, 2020</div>
               </td>
               <td class="gsc_a_c"><a class="gsc_a_ac gs_ibl" href="#">31</a></td>
@@ -325,14 +335,14 @@
         "use strict";
 
         var nextPage = [
-          ["Spatial Transcriptomics Interpolation with Slice-Aware Transformers", "Xiaofei Wang, Ningfeng Que, Jingjing Chen", "bioRxiv, 2023", "5", "2023"],
-          ["A Survey of Deep Learning for Low-Dose CT Denoising", "Yanwen Tian, Hao Tang, Mingzhe Li, Ningfeng Que", "Medical Physics, 2023", "8", "2023"],
-          ["Cross-Slice Attention for 3D Medical Image Segmentation", "Jingjing Chen, Yixuan Jiang, Ningfeng Que, Chao Li, Xiaofei Wang", "MICCAI Workshop, 2022", "12", "2022"],
-          ["Cell-Type Deconvolution in Spatial Transcriptomics: A Benchmark", "Hanyu Liu, Ningfeng Que, Xiao-Fei Wang", "bioRxiv, 2022", "14", "2022"],
-          ["Gradient-Guided Sparse-View CT Reconstruction with Learned Priors", "Hao Tang, Mingzhe Li, Ningfeng Que, Yueyang Teng", "IEEE Access, 2023", "6", "2023"],
-          ["A Benchmark of Attention Modules for Medical Image Segmentation", "Mingzhe Li, Ningfeng Que, Hao Tang, Deliang Li", "ICIP, 2021", "10", "2021"],
-          ["Federated Learning for Cross-Institution Medical Imaging: A Review", "Yumeng Song, Yin Dai, Ningfeng Que", "Frontiers in Radiology, 2020", "4", "2020"],
-          ["Multi-Modal Fusion of CT and MRI with Dense Connections", "Ningfeng Que, Yumeng Song, Yin Dai, Wei Liu", "ISBI, 2019", "9", "2019"]
+          ["Spatial Transcriptomics Interpolation with Slice-Aware Transformers", "Xiaofei Wang, Alex Rivera, Jingjing Chen", "bioRxiv, 2023", "5", "2023"],
+          ["A Survey of Deep Learning for Low-Dose CT Denoising", "Yanwen Tian, Hao Tang, Mingzhe Li, Alex Rivera", "Medical Physics, 2023", "8", "2023"],
+          ["Cross-Slice Attention for 3D Medical Image Segmentation", "Jingjing Chen, Yixuan Jiang, Alex Rivera, Chao Li, Xiaofei Wang", "MICCAI Workshop, 2022", "12", "2022"],
+          ["Cell-Type Deconvolution in Spatial Transcriptomics: A Benchmark", "Hanyu Liu, Alex Rivera, Xiao-Fei Wang", "bioRxiv, 2022", "14", "2022"],
+          ["Gradient-Guided Sparse-View CT Reconstruction with Learned Priors", "Hao Tang, Mingzhe Li, Alex Rivera, Yueyang Teng", "IEEE Access, 2023", "6", "2023"],
+          ["A Benchmark of Attention Modules for Medical Image Segmentation", "Mingzhe Li, Alex Rivera, Hao Tang, Deliang Li", "ICIP, 2021", "10", "2021"],
+          ["Federated Learning for Cross-Institution Medical Imaging: A Review", "Yumeng Song, Yin Dai, Alex Rivera", "Frontiers in Radiology, 2020", "4", "2020"],
+          ["Multi-Modal Fusion of CT and MRI with Dense Connections", "Alex Rivera, Yumeng Song, Yin Dai, Wei Liu", "ISBI, 2019", "9", "2019"]
         ];
 
         var body = document.getElementById("gsc_a_b");

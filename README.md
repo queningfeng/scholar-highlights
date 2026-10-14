@@ -13,6 +13,11 @@ Scholar Highlights 在你自己的主页（以及任何学者的主页）上做�
 
 同时它会自动点完 “Show more”，把全部论文都加载出来，指标才覆盖整份论文列表。
 
+![Scholar Highlights 在 Google Scholar 作者主页上的效果](docs/screenshot.png)
+
+<sub>上图为本地复现 Scholar 页面结构后的实拍（无头 Edge + 真实扩展）。
+金色 = 独立一作，紫色 = 共同一作，橙色 = 第二作者，未着色 = 中间作者（该角色默认关闭）。</sub>
+
 ---
 
 ## 目录
@@ -267,16 +272,18 @@ scholar-highlights/
 ├── assets/
 │   ├── icon.svg                  # 图标源文件
 │   └── icons/icon-{16,32,48,96,128}.png
+├── docs/
+│   └── screenshot.png            # README 里那张效果图（本地实拍）
 ├── scripts/
 │   ├── check-manifest-parity.mjs # 两个 manifest 的一致性 + 引用文件存在性
 │   ├── check-syntax.mjs          # 对每个 JS 文件跑 node --check
 │   └── make-icons.py             # 用 Pillow 重新生成图标（含 icon.svg）
 ├── tests/
-│   ├── run.js  harness.js        # 零依赖测试运行器
-│   ├── cases/*.test.js           # 6 组用例
-│   └── fixtures/                 # 用例数据 + sample-profile.html（真实 DOM 结构）
+│   ├── run.js  harness.js        # 零依赖测试运行器（自动发现 cases/ 下的用例）
+│   ├── cases/*.test.js           # 8 组用例，含 preset.test.js（作者本人的共同一作清单）
+│   └── fixtures/                 # 用例数据 + sample-profile.html（真实 DOM 结构，身份为合成）
 └── tools/
-    ├── verify-chrome.mjs         # 用无头 Chrome 真机跑一遍 content script（见下）
+    ├── verify-chrome.mjs         # 用无头浏览器真机跑一遍 content script（见下）
     └── README-verify.md          # 该脚本的说明与环境注意事项
 ```
 
@@ -334,34 +341,37 @@ python scripts/make-icons.py
 用 Pillow 在 8 倍超采样下绘制（蓝色圆角底 + 白色放大镜 + 镜片内的深蓝五角星），
 输出 `assets/icons/icon-{16,32,48,96,128}.png` 以及与几何完全一致的 `assets/icon.svg`。
 
-### 真机（Chrome）端到端校验
+### 真机端到端校验
 
 ```sh
 node tools/verify-chrome.mjs
 ```
 
 它会：起一个本地静态服务器、把扩展文件复制成一份匹配 `http://127.0.0.1/*` 的临时扩展、
-用 `--headless=new --load-extension` 启动 Chrome 打开 `tests/fixtures/sample-profile.html`，
+用 `--headless=new --load-extension` 启动浏览器打开 `tests/fixtures/sample-profile.html`，
 然后通过 DevTools 协议断言真实渲染结果（面板存在、20 行全部加载、各角色行的 class、
 姓名标记、指标数字、四种配色互不相同、筛选/专注模式/年份区间点击后的行为）。成功后退出码为 0。
-详见 `tools/README-verify.md`。
+**当前实测：35/35 通过。** 详见 `tools/README-verify.md` 与 `VERIFICATION.md`。
 
-> ⚠️ **本项目的构建环境无法运行这个脚本**：该环境禁止进程创建命名管道，Chromium 因此无法启动
-> （`[FATAL:mojo\public\cpp\platform\platform_channel.cc:187] Check failed: 拒绝访问 (0x5)`，
-> crashpad 也报 `OpenProcess: 拒绝访问`）。这是环境限制，不是扩展问题。
-> 请在你自己的桌面环境里跑一次；在无法启动浏览器的环境里，请把 Node 测试套件
-> （尤其是 `tests/cases/fixture.test.js` —— 它分类的正是同一个 fixture 主页）当作替代验证。
+> ⚠️ **必须用能加载未打包扩展的浏览器**：品牌版 Google Chrome 会直接忽略该开关——
+> `WARNING:extension_service.cc --load-extension is not allowed in Google Chrome, ignoring.`
+> 这与功能开关无关（`--disable-features=DisableLoadExtensionCommandLineSwitch` 也无效）。
+> 请用 **Edge**、**Chromium** 或 **Chrome for Testing**。脚本会自动探测候选浏览器并跳过拒绝加载的那个，
+> 全部不可用时会明确提示，而不是报一个看不懂的失败。
+
+> 本机若无法启动浏览器（例如沙箱禁止创建命名管道），可把 Node 测试套件当作替代验证——
+> 尤其是 `tests/cases/fixture.test.js`，它分类的正是同一个 fixture 主页。
 
 ---
 
 ## 已知限制
 
-- **没有在真实浏览器里跑过**（构建环境不允许启动 Chromium，原因见上；Firefox 也没有安装）：
+- **真实浏览器端到端已通过**（35/35，Edge 无头模式；见 `VERIFICATION.md`）：
   - 已验证：全部纯逻辑（作者匹配、角色判定、覆盖优先级、指标、筛选）、fixture 主页 20 行论文的
     分类结果与手算指标、两个 manifest 的一致性、每个 JS 文件的语法、CSS 括号/分号合法性、
-    以及“扩展依赖的每个选择器都存在于 fixture DOM 中”；
-  - 未验证：真实页面上的面板渲染、`storage.sync` 往返、`Show more` 自动点击、姓名标记的 DOM 操作。
-    这四件事都在 `tools/verify-chrome.mjs` 里有断言，装好浏览器后一条命令即可验证。
+    "扩展依赖的每个选择器都存在于 fixture DOM 中"，以及**真实页面上的**面板渲染、`storage.sync` 往返、
+    `Show more` 自动点击、姓名标记的 DOM 操作、筛选与专注模式的实际行为。
+  - **仍未验证：Firefox**（本机未安装）。manifest 的静态一致性已覆盖，但加载路径没有真机跑过。
 - Google Scholar 抹掉标记后无法从页面推断真实身份，必须靠[手动覆盖](#手动覆盖overrides)或内置预设补上。
 - 主页上的 “Also published as” 交互区只有在页面已经渲染出该文本时才会被读取；插件不会去点它，也不会发请求。
 - 不处理同一篇论文在 Scholar 上重复出现的情况（按行独立处理）。
